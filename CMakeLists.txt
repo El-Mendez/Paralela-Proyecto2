@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(Lab4)
+project(Proyecto2)
 enable_language(Fortran)
 
 set(CMAKE_CXX_STANDARD 20)
