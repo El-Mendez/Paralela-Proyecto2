@@ -14,3 +14,4 @@ link_libraries(MPI::MPI_CXX)
 link_libraries(OpenSSL::SSL)
 
 add_executable(Lab4 main.cpp crypto.cpp)
+add_executable(test test.cpp crypto.cpp)

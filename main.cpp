@@ -6,23 +6,11 @@
 #include <openssl/des.h>
 #include <openssl/evp.h>
 
-//descifra un texto dado una llave
-void decrypt(long key, const char *cipher, int len){
-    long k = prepare_key(key);
-    ecb_crypt((char *)&k, (char *) cipher, 16, DES_DECRYPT);
-    DES_ecb_encrypt((char*)cipher, )
-}
-
-
-//cifra un texto dado una llave
-void encrypt(long key, const char *cipher) {
-    long k = prepare_key(key);
-    ecb_crypt((char *)&k, (char *) cipher, 16, DES_ENCRYPT);
-}
-
 //palabra clave a buscar en texto descifrado para determinar si se rompio el codigo
 char search[] = "es una prueba de";
-int tryKey(long key, char *ciph, int len){
+int tryKey(long key, unsigned char *cipher_text, int len) {
+
+
     char temp[len+1]; //+1 por el caracter terminal
     memcpy(temp, ciph, len);
     temp[len]=0;	//caracter terminal
