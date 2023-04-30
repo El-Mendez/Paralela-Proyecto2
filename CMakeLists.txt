@@ -13,4 +13,4 @@ add_definitions(-DOMPI_SKIP_MPICXX)
 link_libraries(MPI::MPI_CXX)
 link_libraries(OpenSSL::SSL)
 
-add_executable(Lab4 main.cpp)
+add_executable(Lab4 main.cpp crypto.cpp)

@@ -1,44 +1,23 @@
-//bruteforceNaive.c
-//Tambien cifra un texto cualquiera con un key arbitrario.
-//OJO: asegurarse que la palabra a buscar sea lo suficientemente grande
-//  evitando falsas soluciones ya que sera muy improbable que tal palabra suceda de
-//  forma pseudoaleatoria en el descifrado.
-//>> mpicc bruteforce.c -o desBrute
-//>> mpirun -np <N> desBrute
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
 #include <unistd.h>
 #include <openssl/des.h>
+#include <openssl/evp.h>
 
 //descifra un texto dado una llave
-void decrypt(long key, char *ciph, int len){
-    //set parity of key and do decrypt
-    long k = 0;
-    for(int i=0; i<8; ++i){
-        key <<= 1;
-        k += (key & (0xFE << i*8));
-    }
-
-    // TODO actualizar las funciones DES_ecb2_encrypt()
-    des_setparity((char *)&k);  //el poder del casteo y &
-    ecb_crypt((char *)&k, (char *) ciph, 16, DES_DECRYPT);
+void decrypt(long key, const char *cipher, int len){
+    long k = prepare_key(key);
+    ecb_crypt((char *)&k, (char *) cipher, 16, DES_DECRYPT);
+    DES_ecb_encrypt((char*)cipher, )
 }
 
-//cifra un texto dado una llave
-void encrypt(long key, char *ciph) {
-    //set parity of key and do encrypt
-    long k = 0;
-    for(int i=0; i<8; ++i){
-        key <<= 1;
-        k += (key & (0xFE << i*8));
-    }
 
-    // TODO actualizar las funciones DES_ecb2_encrypt()
-    des_setparity((char *)&k);  //el poder del casteo y &
-    ecb_crypt((char *)&k, (char *) ciph, 16, DES_ENCRYPT);
+//cifra un texto dado una llave
+void encrypt(long key, const char *cipher) {
+    long k = prepare_key(key);
+    ecb_crypt((char *)&k, (char *) cipher, 16, DES_ENCRYPT);
 }
 
 //palabra clave a buscar en texto descifrado para determinar si se rompio el codigo
