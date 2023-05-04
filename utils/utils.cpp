@@ -5,16 +5,21 @@
 #include "utils.h"
 #include "../crypto/crypto.h"
 #include <cstring>
+#include <fstream>
 
 
-unsigned char SECRET_MSG[BUFFER_SIZE] = "abcdefghjiklmnopqrstuvwxyz";
 unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghjikl";
 
 int get_encrypted_secret(unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
-    int input_len = strlen((char *)SECRET_MSG);
 
-    return encrypt(key, SECRET_MSG, cipher_text, input_len);
+    // read from file text
+    std::ifstream file;
+    file.open("secret.txt", std::ios::in);
+    file.read((char *)cipher_text, BUFFER_SIZE);
+    file.close();
+
+    return encrypt(key, cipher_text, cipher_text, file.gcount());
 }
 
 bool contains(const unsigned char *str, const unsigned char *sub_str) {

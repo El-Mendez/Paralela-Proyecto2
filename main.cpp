@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
     unsigned char cipher_text[BUFFER_SIZE];
     unsigned char buffer[BUFFER_SIZE];
     int cipher_len = get_encrypted_secret(cipher_text);
-
+    printf("Encrypted message: %s\n", cipher_text);
     // init mpi
     int size, rank;
     MPI_Init(nullptr, nullptr);
