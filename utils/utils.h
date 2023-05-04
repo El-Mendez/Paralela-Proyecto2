@@ -8,6 +8,7 @@
 #define KEY 2L
 #define BUFFER_SIZE 128
 #define MAX_KEY (1L << 56)
+#include <string>
 
 /*
  * Devuelve el secreto encriptado utilizando la llave del algoritmo.
@@ -15,7 +16,7 @@
  * cipher_text: localización donde se guardará el secreto encriptado.
  * returns: longitud del texto encriptado.
  */
-int get_encrypted_secret(unsigned char* cipher_text);
+int get_encrypted_secret(std::string filename, unsigned char* cipher_text);
 
 /*
  * Verifica si una cadena de texto contiene otra cadena de texto

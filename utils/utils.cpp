@@ -10,12 +10,12 @@
 
 unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghjikl";
 
-int get_encrypted_secret(unsigned char* cipher_text) {
+int get_encrypted_secret(std::string filename ,unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
 
     // read from file text
     std::ifstream file;
-    file.open("secret.txt", std::ios::in);
+    file.open(filename, std::ios::in);
     file.read((char *)cipher_text, BUFFER_SIZE);
     file.close();
 
