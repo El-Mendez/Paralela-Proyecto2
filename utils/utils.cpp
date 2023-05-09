@@ -8,7 +8,7 @@
 #include <fstream>
 
 
-unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghjikl";
+unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghijkl";
 
 int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
@@ -16,7 +16,11 @@ int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text
     // read from file text
     std::ifstream file;
     file.open(filename, std::ios::in);
-    file.read((char *)cipher_text, BUFFER_SIZE);
+    if(file.is_open()) {
+        file.read((char *)cipher_text, BUFFER_SIZE);
+    } else {
+        printf("NO SE ENCONTRÓ EL ARCHIVO %s \n", filename.c_str());
+    }
     file.close();
 
     return encrypt(key, cipher_text, cipher_text, file.gcount());

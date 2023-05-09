@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
         printf("Ingrese el nombre del archivo con el mensaje a encriptar\n");
         char filename[BUFFER_SIZE];
         scanf("%s", filename);
-        cipher_len = get_encrypted_secret(filename,cipher_text);
+        cipher_len = get_encrypted_secret(filename, cipher_text);
         printf("Encrypted message: %s\n", cipher_text);
         MPI_Bcast(&cipher_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Bcast(&cipher_text, cipher_len, MPI_CHAR, 0, MPI_COMM_WORLD);

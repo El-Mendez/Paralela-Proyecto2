@@ -16,3 +16,4 @@ link_libraries(OpenSSL::SSL)
 set(sourceCode main.cpp crypto/crypto.cpp utils/utils.cpp)
 
 add_executable(Naive ${sourceCode} approaches/naive.cpp)
+add_executable(Intercalado ${sourceCode} approaches/intercalado.cpp)
