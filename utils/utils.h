@@ -16,7 +16,7 @@
  * cipher_text: localización donde se guardará el secreto encriptado.
  * returns: longitud del texto encriptado.
  */
-int get_encrypted_secret(std::string filename, unsigned char* cipher_text);
+int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text);
 
 /*
  * Verifica si una cadena de texto contiene otra cadena de texto

@@ -13,4 +13,6 @@ add_definitions(-DOMPI_SKIP_MPICXX)
 link_libraries(MPI::MPI_CXX)
 link_libraries(OpenSSL::SSL)
 
-add_executable(Proyecto main.cpp crypto/crypto.cpp utils/utils.cpp)
+set(sourceCode main.cpp crypto/crypto.cpp utils/utils.cpp)
+
+add_executable(Naive ${sourceCode} approaches/naive.cpp)

@@ -10,7 +10,7 @@
 
 unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghjikl";
 
-int get_encrypted_secret(std::string filename ,unsigned char* cipher_text) {
+int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
 
     // read from file text
