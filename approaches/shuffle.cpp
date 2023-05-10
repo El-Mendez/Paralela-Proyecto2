@@ -1,6 +1,7 @@
 #include "../utils/utils.h"
 #include "approach.h"
 #include <mpi.h>
+#include <memory>
 
 long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer) {
     // dividir el trabajo entre nodos
@@ -10,33 +11,34 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     if (rank == size-1) {
         upper = MAX_KEY;
     }
-    srand((unsigned) time(NULL) + rank);
+    srand((unsigned) time(nullptr) + rank);
 
-    printf("Process %d: %ld - %ld \n", rank, lower, upper);
+//    printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
     MPI_Request request;
     MPI_Status status;
     long key = 0L;
     int found = 0;
-    int range = upper - lower;
-    bool check_key[range] = { false };
+    long range = upper - lower;
+    auto was_checked = std::make_unique<bool[]>(range);
+
+    // printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
     // fuerza bruta
     MPI_Irecv(&key, 1, MPI_LONG, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     for (long i = 0; i < range; i++) {
-
         MPI_Test(&request, &found, MPI_STATUS_IGNORE);
         if (found) {
             break;
         }
         long random_key = lower + (rand() % range);
-        while(check_key[random_key - lower]){
+        while(was_checked[random_key - lower]) {
             random_key = lower + (rand() % range);
         }
-        check_key[random_key - lower] = true;
+        was_checked[random_key - lower] = true;
 
         if (key_matches(random_key, cipher_text, cipher_len, buffer)) {
-            key = i;
+            key = random_key;
             for (int node = 0; node < size; node++)
                 MPI_Send(&key, 1, MPI_LONG, node, 0, MPI_COMM_WORLD);
             break;

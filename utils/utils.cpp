@@ -8,7 +8,7 @@
 #include <fstream>
 
 
-unsigned char SECRET_SECTION[BUFFER_SIZE] = "es una prueba de";
+unsigned char SECRET_SECTION[BUFFER_SIZE] = "Esta es una prueba de proyecto 2";
 
 int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
