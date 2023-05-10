@@ -5,7 +5,8 @@
 #ifndef PROYECTO2_UTILS_H
 #define PROYECTO2_UTILS_H
 
-#define KEY 2L
+// #define KEY 12L
+#define KEY 54043195528445952L
 #define BUFFER_SIZE 128
 #define MAX_KEY (1L << 56)
 #include <string>

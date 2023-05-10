@@ -8,22 +8,23 @@
 #include <fstream>
 
 
-unsigned char SECRET_SECTION[BUFFER_SIZE] = "fghijkl";
+unsigned char SECRET_SECTION[BUFFER_SIZE] = "es una prueba de";
 
 int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text) {
     long key = prepare_key_parity(KEY);
+    unsigned char BUFF[BUFFER_SIZE];
 
     // read from file text
     std::ifstream file;
     file.open(filename, std::ios::in);
     if(file.is_open()) {
-        file.read((char *)cipher_text, BUFFER_SIZE);
+        file.read((char *)BUFF, BUFFER_SIZE);
     } else {
         printf("NO SE ENCONTRÓ EL ARCHIVO %s \n", filename.c_str());
     }
     file.close();
 
-    return encrypt(key, cipher_text, cipher_text, file.gcount());
+    return encrypt(key, BUFF, cipher_text, file.gcount());
 }
 
 bool contains(const unsigned char *str, const unsigned char *sub_str) {

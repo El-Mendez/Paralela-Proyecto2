@@ -11,7 +11,7 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
         upper = MAX_KEY;
     }
 
-    printf("Process %d: %ld - %ld \n", rank, lower, upper);
+    // printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
     MPI_Request request;
     MPI_Status status;
