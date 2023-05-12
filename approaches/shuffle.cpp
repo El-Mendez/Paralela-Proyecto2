@@ -13,7 +13,7 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     }
     srand((unsigned) time(nullptr) + rank);
 
-//    printf("Process %d: %ld - %ld \n", rank, lower, upper);
+    printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
     MPI_Request request;
     MPI_Status status;
@@ -24,7 +24,7 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
 
     // printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
-    // fuerza bruta
+    // fuerza bruta shuffle
     MPI_Irecv(&key, 1, MPI_LONG, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     for (long i = 0; i < range; i++) {
         MPI_Test(&request, &found, MPI_STATUS_IGNORE);

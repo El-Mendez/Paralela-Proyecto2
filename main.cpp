@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
 
     if (rank == 0) {
         printf("Ingrese el nombre del archivo con el mensaje a encriptar\n");
-        char filename[BUFFER_SIZE] = "secret.txt";
-        //scanf("%s", filename);
+        char filename[BUFFER_SIZE];
+        scanf("%s", filename);
         cipher_len = get_encrypted_secret(filename, cipher_text);
         cipher_text[cipher_len] = 0;
 

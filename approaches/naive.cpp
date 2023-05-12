@@ -18,7 +18,7 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     long key = 0L;
     int found = 0;
 
-    // fuerza bruta
+    // fuerza bruta naive
     MPI_Irecv(&key, 1, MPI_LONG, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     for (long i = lower; i < upper; i++) {
         MPI_Test(&request, &found, MPI_STATUS_IGNORE);
