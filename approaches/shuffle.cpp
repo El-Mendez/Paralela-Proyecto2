@@ -13,22 +13,20 @@ approach_result crack_password(int rank, int size, unsigned char* cipher_text, i
     }
     srand((unsigned) time(nullptr) + rank);
 
-    //printf("Process %d: %ld - %ld \n", rank, lower, upper);
-
     MPI_Request request;
     MPI_Status status;
-    approach_result result;
+    approach_result result {
+            -1, -1
+    };
     long key = 0L;
     int found = 0;
     long range = upper - lower;
     auto was_checked = std::make_unique<bool[]>(range);
 
-    // printf("Process %d: %ld - %ld \n", rank, lower, upper);
-
     // fuerza bruta shuffle
     MPI_Irecv(&key, 1, MPI_LONG, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     for (long i = 0; i < range; i++) {
-        MPI_Test(&request, &found, MPI_STATUS_IGNORE);
+        MPI_Test(&request, &found, &status);
         if (found) {
             break;
         }
@@ -42,12 +40,19 @@ approach_result crack_password(int rank, int size, unsigned char* cipher_text, i
             key = random_key;
             result.key = key;
             result.rank = rank;
+
             for (int node = 0; node < size; node++)
                 MPI_Send(&key, 1, MPI_LONG, node, 0, MPI_COMM_WORLD);
             break;
         }
     }
 
-    MPI_Wait(&request, &status);
+    if (result.rank != rank) {
+        if (!found) {
+            MPI_Wait(&request, &status);
+        }
+        result.key = key;
+        result.rank = status.MPI_SOURCE;
+    }
     return result;
 }

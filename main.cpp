@@ -55,8 +55,8 @@ int main(int argc, char** argv) {
             file << (end-start)<<",";
         }
 
-        printf("\nThe decrypted message was: %s \n\n", buffer);
-        printf("\nThe key %ld matched %s by node %d\n%lf\n", result.key, buffer,result.rank, (end-start));
+        printf("\nThe decrypted message was: \e[3m%s\e[0m", buffer);
+        printf("\nThe key %ld was found by node %d in %lf seconds.\n", result.key, result.rank, (end-start));
     }
 
     MPI_Finalize();

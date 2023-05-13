@@ -7,11 +7,11 @@
 
 //#define KEY 123456L
 //#define KEY 18014398509481984L
-#define KEY 36028797018963968L
-//#define KEY 1L
-//#define KEY ((1L << 56))
+//#define KEY 36028797018963968L
+#define KEY 4L
+//#define KEY 0L
 #define BUFFER_SIZE 128
-#define MAX_KEY ((1L << 56))
+#define MAX_KEY ((1L << 20))
 #include <string>
 
 /*
