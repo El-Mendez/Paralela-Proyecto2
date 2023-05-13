@@ -19,10 +19,12 @@ int main(int argc, char** argv) {
     double start, end;
 
     if (rank == 0) {
-        printf("Ingrese el nombre del archivo con el mensaje a encriptar\n");
-        char filename[BUFFER_SIZE];
-        scanf("%s", filename);
-        cipher_len = get_encrypted_secret(filename, cipher_text);
+            char filename[BUFFER_SIZE];
+        while (cipher_len == 0) {
+            printf("Ingrese el nombre del archivo con el mensaje a encriptar\n");
+            scanf("%s", filename);
+            cipher_len = get_encrypted_secret(filename, cipher_text);
+        }
         cipher_text[cipher_len] = 0;
 
         // print cipher_text in hex
@@ -40,11 +42,11 @@ int main(int argc, char** argv) {
         MPI_Bcast(&cipher_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Bcast(&cipher_text, cipher_len, MPI_CHAR, 0, MPI_COMM_WORLD);
     }
-    long key = crack_password(rank, size, cipher_text, cipher_len, buffer);
+    approach_result result = crack_password(rank, size, cipher_text, cipher_len, buffer);
     end = MPI_Wtime();
     // imprimir resultados
     if (rank == 0) {
-        int len = decrypt(prepare_key_parity(key), cipher_text, buffer, cipher_len);
+        int len = decrypt(prepare_key_parity(result.key), cipher_text, buffer, cipher_len);
         buffer[len] = 0;
         // write file
         std::ofstream file;
@@ -54,7 +56,7 @@ int main(int argc, char** argv) {
         }
 
         printf("\nThe decrypted message was: %s \n\n", buffer);
-        printf("\nThe key %ld matched %s \n%lf\n", key, buffer, (end-start));
+        printf("\nThe key %ld matched %s by node %d\n%lf\n", result.key, buffer,result.rank, (end-start));
     }
 
     MPI_Finalize();

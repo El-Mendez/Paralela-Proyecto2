@@ -3,7 +3,7 @@
 #include <mpi.h>
 #include <memory>
 
-long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer) {
+approach_result crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer) {
     // dividir el trabajo entre nodos
     long work_per_node = MAX_KEY / size;
     long lower = work_per_node * rank;
@@ -13,10 +13,11 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     }
     srand((unsigned) time(nullptr) + rank);
 
-    printf("Process %d: %ld - %ld \n", rank, lower, upper);
+    //printf("Process %d: %ld - %ld \n", rank, lower, upper);
 
     MPI_Request request;
     MPI_Status status;
+    approach_result result;
     long key = 0L;
     int found = 0;
     long range = upper - lower;
@@ -39,6 +40,8 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
 
         if (key_matches(random_key, cipher_text, cipher_len, buffer)) {
             key = random_key;
+            result.key = key;
+            result.rank = rank;
             for (int node = 0; node < size; node++)
                 MPI_Send(&key, 1, MPI_LONG, node, 0, MPI_COMM_WORLD);
             break;
@@ -46,5 +49,5 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     }
 
     MPI_Wait(&request, &status);
-    return key;
+    return result;
 }

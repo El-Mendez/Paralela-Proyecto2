@@ -2,9 +2,10 @@
 #include "approach.h"
 #include <mpi.h>
 
-long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer) {
+approach_result crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer) {
     // dividir el trabajo entre nodos
     long work_per_node = MAX_KEY / size;
+    approach_result result;
     long lower = work_per_node * rank;
     long upper = work_per_node * (rank + 1) - 1;
     if (rank == size-1) {
@@ -20,6 +21,7 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
 
     // fuerza bruta naive
     MPI_Irecv(&key, 1, MPI_LONG, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
+    printf("Process %d: %ld - %ld \n", rank, lower, upper);
     for (long i = lower; i < upper; i++) {
         MPI_Test(&request, &found, MPI_STATUS_IGNORE);
         if (found) {
@@ -35,5 +37,9 @@ long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_l
     }
 
     MPI_Wait(&request, &status);
-    return key;
+    MPI_Request_get_status(request, &found, &status);
+    result.key = key;
+    result.rank = status.MPI_SOURCE;
+    printf("Process %d: %d \n", rank, status.MPI_SOURCE);
+    return result;
 }

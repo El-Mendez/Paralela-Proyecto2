@@ -5,6 +5,11 @@
 #ifndef PROYECTO2_APPROACH_H
 #define PROYECTO2_APPROACH_H
 
-long crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer);
+struct approach_result {
+    long key;
+    int rank;
+};
+
+approach_result crack_password(int rank, int size, unsigned char* cipher_text, int cipher_len, unsigned char* buffer);
 
 #endif //PROYECTO2_APPROACH_H

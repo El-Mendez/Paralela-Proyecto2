@@ -17,11 +17,10 @@ int get_encrypted_secret(const std::string &filename, unsigned char* cipher_text
     // read from file text
     std::ifstream file;
     file.open(filename, std::ios::in);
-    if(file.is_open()) {
-        file.read((char *)BUFF, BUFFER_SIZE);
-    } else {
-        printf("NO SE ENCONTRÓ EL ARCHIVO %s \n", filename.c_str());
+    if(!file.is_open()) {
+        return 0;
     }
+    file.read((char *)BUFF, BUFFER_SIZE);
     file.close();
 
     return encrypt(key, BUFF, cipher_text, file.gcount());
